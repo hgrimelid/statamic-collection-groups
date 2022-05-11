@@ -22,6 +22,7 @@ class ServiceProvider extends AddonServiceProvider
                     $collection = Collection::findByHandle($collectionHandle);
 
                     return (new NavItem())
+                        ->can("view $collectionHandle entries")
                         ->name($collection->title())
                         ->url($collection->showUrl());
                 });
@@ -31,6 +32,7 @@ class ServiceProvider extends AddonServiceProvider
                     ->active($collections->pluck('url')->join('|'))
                     ->section('Content')
                     ->icon('content-writing')
+                    ->can($collections->first()->authorization()->ability)
                     ->url($collections->first()->url());
 
                 $item->children($collections);
